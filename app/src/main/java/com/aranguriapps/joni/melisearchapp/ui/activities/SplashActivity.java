@@ -32,23 +32,7 @@ public class SplashActivity extends AppCompatActivity {
         Thread timerThread = new Thread(){
             public void run() {
 
-/*
-                iconoAranguri.startAnimation(fadeIn);
-                runOnUiThread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                cerrarSplash();
-                            }
-                        }, 4000);
-
-
-                    }
-                });*/
                 iconoAranguri.startAnimation(fadeIn);
                 runOnUiThread(new Runnable() {
 

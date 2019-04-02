@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ItemSearchResponse {
 
 
-    @SerializedName("items")
+    @SerializedName("results")
     ArrayList<ItemSearch> itemSearches;
 
     public ArrayList<ItemSearch> getArtists() {

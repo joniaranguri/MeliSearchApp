@@ -1,9 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+
     tools:context=".ui.activities.DetailActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.DetailActivity">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:id="@+id/viewPager_rel"
+            android:background="@android:color/white">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true">
+
+
+            </android.support.v4.view.ViewPager>
+            <TextView
+                android:id="@+id/txt_item_cat_fotos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="21dp"
+                android:background="@android:color/darker_gray"
+                android:text="10 FOTOS"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/txt_item_title_det"
+            android:layout_below="@id/viewPager_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="TIULO"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textSize="28sp"/>
+        <TextView
+            android:text="30000"
+
+            android:id="@+id/txt_item_price_det"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_item_title_det"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="28sp"/>
+
+        <TextView
+            android:text="DESCRIPCION SDFASDFASDFOIJASDOFIJASIODFJOAISJ
+            asdfsdfsdfasdfasdf
+            asdf
+            asdf
+            as
+            df
+            asf
+            a
+            sdf
+            as
+            df
+            asd
+            f
+            asdf
+            as
+            df
+            asd
+            f
+            asdf
+            asdfasdfasdfasdfasdfasfasfasdfasfdasdfasdfasfasdfasdfasd
+            fasdf
+            as
+            dfas
+            f
+            asdf
+            a
+            sdf
+            as
+            df
+            asd
+            f
+            asdf
+            as
+            df
+            asd
+            f
+            asdfDFOIJADSFOIJASODIFJOASDJFOIAJDSFOIJASDFOIJ AOISDFJOASDJ FIJFOIASJFOI JDFI JASDFOIJASODFOASDFJ"
+
+            android:id="@+id/txt_item_desc_det"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_item_price_det"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textSize="14sp"
+            />
+
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 android:id="@+id/btn_go_to_meli"
+                android:background="#eee000"
+                android:text="IR A MERCADOLIBRE"
+                android:layout_below="@id/txt_item_desc_det"
+                android:layout_margin="30dp"/>
+
+    </RelativeLayout>
+</ScrollView>

@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 
 
 import com.aranguriapps.joni.melisearchapp.R;
+import com.aranguriapps.joni.melisearchapp.root.MeliSearchApp;
+import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 
 import butterknife.ButterKnife;
 
@@ -17,7 +19,7 @@ public  abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-        //injectDependencies();
+        injectDependencies();
         injectViews();
     }
 
@@ -42,7 +44,7 @@ public  abstract class BaseActivity extends AppCompatActivity {
      * layout this will be configured
      */
     public void setupToolbar() {
-      //  mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
         }
@@ -61,10 +63,10 @@ public  abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Setup the object graph and inject the dependencies needed on this activity.
-
+*/
     private void injectDependencies() {
-        setUpComponent(SpotifyStreamerApp.getApp(this).getComponent());
-    }*/
+        setUpComponent(MeliSearchApp.getApp(this).getComponent());
+    }
 
     /**
      * Every object annotated with bind its gonna injected trough butterknife
@@ -74,5 +76,5 @@ public  abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-  //  public abstract void setUpComponent(SpotifyStreamerComponent appComponent);
+   public abstract void setUpComponent(MeliSearchComponent appComponent);
 }

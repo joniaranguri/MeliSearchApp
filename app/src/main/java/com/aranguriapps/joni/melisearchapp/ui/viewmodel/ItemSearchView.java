@@ -5,7 +5,11 @@ import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
 import java.util.ArrayList;
 
 public interface ItemSearchView {
-    void displayFoundItems(ArrayList<ItemSearch> artists);
+    void setupList();
+
+    void setupAdapter();
+
+    void displayFoundItems(ArrayList<ItemSearch> itemSearches);
 
     void displayFailedSearch();
 

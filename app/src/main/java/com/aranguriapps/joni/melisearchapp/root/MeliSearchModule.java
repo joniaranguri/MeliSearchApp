@@ -34,7 +34,7 @@ public class MeliSearchModule {
         return MeliSearchApiAdapter.getInstance();
     }
 
-    @Provides @Singleton public MeliSearchApiService provideSpotifyApiService(Retrofit retrofit){
+    @Provides @Singleton public MeliSearchApiService provideMeliSearchApiService(Retrofit retrofit){
         return retrofit.create(MeliSearchApiService.class);
     }
 

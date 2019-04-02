@@ -1,6 +1,8 @@
 package com.aranguriapps.joni.melisearchapp.ui.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,79 +10,68 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.aranguriapps.joni.melisearchapp.R;
+import com.aranguriapps.joni.melisearchapp.common.BaseActivity;
+import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
+import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
 
     private MaterialSearchView searchView;
+    public static String queryFromSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
 
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("MeliSearchApp");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-
-       /* lstView = (ListView)findViewById(R.id.lstView);
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,lstSource);
-        lstView.setAdapter(adapter);
-*/
-
         searchView = findViewById(R.id.search_view);
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
-            public void onSearchViewShown() {
-
-            }
+            public void onSearchViewShown() { }
 
             @Override
-            public void onSearchViewClosed() {
-
-                //If closed Search View , lstView will return default
-               /* lstView = (ListView)findViewById(R.id.lstView);
-                ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,lstSource);
-                lstView.setAdapter(adapter);*/
-
-            }
+            public void onSearchViewClosed() {}
         });
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                queryFromSearch= query;
+                Intent intent = new Intent(SearchActivity.this,ResultsActivity.class);
+                startActivity(intent);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-              /*  if(newText != null && !newText.isEmpty()){
-                    List<String> lstFound = new ArrayList<String>();
-                    for(String item:lstSource){
-                        if(item.contains(newText))
-                            lstFound.add(item);
-                    }
-
-                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,lstFound);
-                    lstView.setAdapter(adapter);
-                }
-                else{
-                    //if search text is null
-                    //return default
-                    ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,lstSource);
-                    lstView.setAdapter(adapter);
-                }*/
-                return true;
-            }
+            public boolean onQueryTextChange(String newText) { return true; }
 
         });
 
 
 
+
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_search;
+    }
+
+    @Nullable
+    @Override
+    protected BasePresenter getPresenter() {
+        return null;
+    }
+
+    @Override
+    public void setUpComponent(MeliSearchComponent appComponent) {
 
     }
 

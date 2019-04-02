@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.aranguriapps.joni.melisearchapp.root.MeliSearchApp;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  *     These operations are defined by a view model and are triggered by its presenter.
  * </p>
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment{
 
     protected Context CONTEXT;
 
@@ -32,11 +33,6 @@ public abstract class BaseFragment extends Fragment {
         CONTEXT = activity;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        injectDependencies();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +43,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindViews(view);
+        injectDependencies();
     }
 
     @Override
@@ -79,11 +76,8 @@ public abstract class BaseFragment extends Fragment {
      * */
     protected abstract BasePresenter getPresenter();
 
-    /**
-     * Override this method in case you need to inject dependencies
-     */
-    public void injectDependencies() {
-
+    private void injectDependencies() {
+        setUpComponent(MeliSearchApp.getApp(getActivity()).getComponent());
     }
 
     /**
@@ -100,7 +94,6 @@ public abstract class BaseFragment extends Fragment {
     /**
      * This method will setup the injector and will commit the dependencies injections.
      * */
-    @Deprecated
-    protected void setUpComponent(MeliSearchComponent component){}
+    protected abstract void setUpComponent(MeliSearchComponent component);
 
 }

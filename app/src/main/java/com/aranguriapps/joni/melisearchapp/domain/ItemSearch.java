@@ -1,16 +1,18 @@
 package com.aranguriapps.joni.melisearchapp.domain;
 
+import java.util.ArrayList;
+
 public class ItemSearch {
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    private  int id;
-
+    private  String id;
+    private String thumbnail;
     public String getTitle() {
         return title;
     }
@@ -20,6 +22,41 @@ public class ItemSearch {
     }
 
     private String title;
+     private String price;
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
 
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public ArrayList<MeliSearchImage> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(ArrayList<MeliSearchImage> pictures) {
+        this.pictures = pictures;
+    }
+
+    private ArrayList<MeliSearchImage> pictures;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private String description;
 }

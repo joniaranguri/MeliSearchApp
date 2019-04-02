@@ -1,6 +1,8 @@
 package com.aranguriapps.joni.melisearchapp.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -10,13 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aranguriapps.joni.melisearchapp.R;
+import com.aranguriapps.joni.melisearchapp.common.MercadoLibreUtils;
 import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
+import com.aranguriapps.joni.melisearchapp.ui.activities.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>{
 
@@ -33,21 +38,18 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.item_searched, parent, false);
-
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ItemSearch currentArtist = itemSearches.get(position);
+        ItemSearch currentItem = itemSearches.get(position);
 
-        holder.setArtistName(currentArtist.getTitle());
+        holder.setItemTitle(currentItem.getTitle());
 
-       /* if(currentArtist.getMediumImage() != null)
-            holder.setArtistImage(currentArtist.getMediumImage().getUrl());
-
-        else*/
-            holder.setPlaceholderImage();
+        if(currentItem.getThumbnail() != null)
+            holder.setItemThumbnail(currentItem.getThumbnail());
+        holder.setItemPrice(currentItem.getPrice());
     }
 
     @Override
@@ -120,24 +122,33 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public static final int IMG_SIZE_DP = 112;
+         static final int IMG_SIZE_DP = 112;
 
-        public int IMG_SIZE_PX;
+         int IMG_SIZE_PX;
 
         @BindView(R.id.img_thum_item)
         ImageView itemImage;
 
         @BindView(R.id.txt_item_title)
         TextView itemTitle;
+        @BindView(R.id.txt_item_price)
+        TextView itemPrice;
 
-        public ViewHolder(View itemView) {
+         ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null)
                         clickListener.onItemClicked(getPosition());
+                    Intent intent= new Intent(view.getContext(), DetailActivity.class);
+
+                    intent.putExtra(view.getContext().getString(R.string.item_id_to_search),  itemSearches.get(getAdapterPosition()).getId());
+
+                    view.getContext().startActivity(intent);
+
                 }
             });
 
@@ -149,29 +160,24 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             IMG_SIZE_PX = IMG_SIZE_DP * (metrics.densityDpi / 160);
         }
 
-        public void setArtistName(String name){
+        void setItemTitle(String name){
             itemTitle.setText(name);
         }
-
-        public void setArtistImage(String urlImage) {
-            Picasso.get()
-                    .load(urlImage)
-                    .placeholder(R.drawable.logo)
-                    .resize(IMG_SIZE_PX, IMG_SIZE_PX)
-                    .into(itemImage);
+        void setItemPrice(String price){
+            itemPrice.setText(context.getResources().getString(R.string.pesos_sig).concat(price));
         }
 
-        public void setPlaceholderImage() {
+
+         void setItemThumbnail(String urlImage) {
             Picasso.get()
-                    .load(R.drawable.logo)
-                    .resize(IMG_SIZE_PX, IMG_SIZE_PX)
+                    .load(MercadoLibreUtils.getImageGoodQuality(urlImage))
+                    //.placeholder(R.drawable.logo)
+                  // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
                     .into(itemImage);
         }
     }
 
     /**
-     * Created by Pedro Antonio Hernández on 03/06/2015.
-     *
      * A simple interface to be configured in a RecyclerView
      */
     public interface ItemClickListener{

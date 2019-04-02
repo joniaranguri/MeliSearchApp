@@ -10,7 +10,7 @@ import dagger.Provides;
 public class InteractorModule {
 
     @Provides
-    public ItemSearchInteractor provideArtistSearchInteractor(MeliSearchApiService apiService){
+    public ItemSearchInteractor provideItemSearchInteractor(MeliSearchApiService apiService){
         return new ItemSearchInteractor(apiService);
     }
 }

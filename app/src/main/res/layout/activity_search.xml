@@ -28,12 +28,5 @@
         android:textColorHint="#FFFFFF"
         />
 
-    <ListView
-        android:id="@+id/lstView"
-        android:layout_height="fill_parent"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:divider="#806326"
-        android:dividerHeight="1dp"
-        />
+
 </RelativeLayout>

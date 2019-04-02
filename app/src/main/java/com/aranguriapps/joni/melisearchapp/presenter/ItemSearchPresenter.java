@@ -19,7 +19,8 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
     }
     @Override
     public void onStart() {
-
+        searchView.setupAdapter();
+        searchView.setupList();
     }
 
     @Override
@@ -29,11 +30,18 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
 
     @Override
     public void onItemsFound(ArrayList<ItemSearch> items) {
-
+    searchView.displayFoundItems(items);
     }
 
     @Override
     public void onFailedSearch() {
+        searchView.displayFailedSearch();
 
     }
+    public void searchItems(String query) {
+       searchInteractor.performSearch("MLA",  query, this);
+
+    }
+
+
 }
