@@ -1,11 +1,19 @@
 package com.aranguriapps.joni.melisearchapp.ui.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aranguriapps.joni.melisearchapp.R;
@@ -16,10 +24,12 @@ import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
 import com.aranguriapps.joni.melisearchapp.module.ItemSearchModule;
 import com.aranguriapps.joni.melisearchapp.presenter.ItemSearchPresenter;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
+import com.aranguriapps.joni.melisearchapp.ui.activities.DetailActivity;
 import com.aranguriapps.joni.melisearchapp.ui.activities.ResultsActivity;
 import com.aranguriapps.joni.melisearchapp.ui.activities.SearchActivity;
 import com.aranguriapps.joni.melisearchapp.ui.adapters.SearchResultsAdapter;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemSearchView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
@@ -27,9 +37,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static android.view.View.GONE;
 
-public class ItemSearchFragment extends BaseFragment implements ItemSearchView, SearchResultsAdapter.ItemClickListener{
 
+public class ItemSearchFragment extends BaseFragment implements ItemSearchView, SearchResultsAdapter.ItemClickListener, ResultsActivity.QueryCallBackListener {
 
     @Inject
     ItemSearchPresenter mSearchPresenter;
@@ -39,6 +50,9 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @BindView(R.id.list_items)
     RecyclerView mItemResultsList;
+    @BindView(R.id.pbLoading)
+    ProgressBar pbLoading;
+
     @Override
     protected int getFragmentLayout() {
         return R.layout.fragment_item_search;
@@ -56,21 +70,27 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
                 .itemSearchModule(new ItemSearchModule(this))
                 .build()
                 .inject(this);
-        if(SearchActivity.queryFromSearch!=null)
-            mSearchPresenter.searchItems(SearchActivity.queryFromSearch);
+
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((ResultsActivity) getActivity()).setQueryCallBackListener(this);
+        //TODO memory manage
     }
 
     @Override
     public void setupList() {
         mItemResultsList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-
-
         mItemResultsList.setAdapter(mResultsAdapter);
     }
 
@@ -89,16 +109,8 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     public void displayFoundItems(ArrayList<ItemSearch> artists) {
 
             mResultsAdapter.replace(artists);
+            pbLoading.setVisibility(GONE);
     }
-
-    /*  @OnTextChanged(R.id.etxt_search)
-      public void onQueryChanged(CharSequence query){
-          if (query.length() >= 3)
-              mSearchPresenter.searchArtists(query.toString());
-          else if (query.length() <= 2)
-              mResultsAdapter.clear();
-      }
-  */
 
 
     @Override
@@ -117,8 +129,18 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onItemClicked(String idItem) {
+        Intent intent= new Intent(getContext(), DetailActivity.class);
+        intent.putExtra(getString(R.string.item_id_to_search),idItem);
+        startActivity(intent);
 
 
+
+
+    }
+
+    @Override
+    public void onCallBack(String query) {
+        mSearchPresenter.searchItems(query);
     }
 }

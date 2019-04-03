@@ -142,12 +142,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null)
-                        clickListener.onItemClicked(getPosition());
-                    Intent intent= new Intent(view.getContext(), DetailActivity.class);
-
-                    intent.putExtra(view.getContext().getString(R.string.item_id_to_search),  itemSearches.get(getAdapterPosition()).getId());
-
-                    view.getContext().startActivity(intent);
+                        clickListener.onItemClicked(itemSearches.get(getAdapterPosition()).getId());
 
                 }
             });
@@ -171,7 +166,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
          void setItemThumbnail(String urlImage) {
             Picasso.get()
                     .load(MercadoLibreUtils.getImageGoodQuality(urlImage))
-                    //.placeholder(R.drawable.logo)
+                    .placeholder(R.drawable.background_item)
                   // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
                     .into(itemImage);
         }
@@ -183,8 +178,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     public interface ItemClickListener{
         /**
          * This method will be invoked when an item from the list be clicked
-         * @param position position in the list
+         * @param idItem of Item clicked
          * */
-        void onItemClicked(int position);
+        void onItemClicked(String idItem);
     }
 }

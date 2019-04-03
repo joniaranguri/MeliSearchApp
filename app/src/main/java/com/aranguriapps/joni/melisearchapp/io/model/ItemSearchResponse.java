@@ -11,7 +11,7 @@ public class ItemSearchResponse {
     @SerializedName("results")
     ArrayList<ItemSearch> itemSearches;
 
-    public ArrayList<ItemSearch> getArtists() {
+    public ArrayList<ItemSearch> getItems() {
         return itemSearches;
     }
 

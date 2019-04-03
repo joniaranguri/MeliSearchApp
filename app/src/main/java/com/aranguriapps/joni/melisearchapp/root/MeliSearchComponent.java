@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.aranguriapps.joni.melisearchapp.interactor.ItemSearchInteractor;
 import com.aranguriapps.joni.melisearchapp.module.InteractorModule;
+import com.aranguriapps.joni.melisearchapp.module.ItemDetailModule;
 
 import javax.inject.Singleton;
 
@@ -13,7 +14,8 @@ import dagger.Component;
 @Component(
         modules = {
                 MeliSearchModule.class,
-                InteractorModule.class
+                InteractorModule.class,
+                ItemDetailModule.class
         }
 )
 public interface MeliSearchComponent {

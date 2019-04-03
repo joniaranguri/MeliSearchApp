@@ -6,4 +6,5 @@ public class Constants {
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
     public static final String URL = "url";
+    public static final String PLAIN_TEXT="plain_text";
 }

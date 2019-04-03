@@ -15,22 +15,19 @@ import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import butterknife.BindView;
+
 
 public class SearchActivity extends BaseActivity {
-
-    private MaterialSearchView searchView;
+    @BindView(R.id.search_view)
+    public MaterialSearchView searchView;
     public static String queryFromSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("MeliSearchApp");
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        searchView = findViewById(R.id.search_view);
+        setupToolbar("MeliSearch APP");
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -43,8 +40,9 @@ public class SearchActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                queryFromSearch= query;
+
                 Intent intent = new Intent(SearchActivity.this,ResultsActivity.class);
+                intent.putExtra("queryFromSearch",query);
                 startActivity(intent);
                 return false;
             }

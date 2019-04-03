@@ -5,4 +5,8 @@
     <string name="server_error">Server error</string>
     <string name="pesos_sig">$</string>
     <string name="item_id_to_search">item_id_to_search</string>
+    <string name="_FOTOS">FOTOS</string>
+    <string name="GO_TO_MERCADOLIBRE">IR A MERCADOLIBRE</string>
+    <string name="Buscar">Buscar...</string>
+    <string name="Description">Descripción</string>
 </resources>

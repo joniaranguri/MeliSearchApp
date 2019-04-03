@@ -1,5 +1,6 @@
 package com.aranguriapps.joni.melisearchapp.common;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 import butterknife.ButterKnife;
 
 public  abstract class BaseActivity extends AppCompatActivity {
-    private Toolbar mToolbar;
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,11 @@ public  abstract class BaseActivity extends AppCompatActivity {
      * Its common use a toolbar within activity, if it exists in the
      * layout this will be configured
      */
-    public void setupToolbar() {
+    public void setupToolbar(String title) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
+            mToolbar.setTitle(title);
+            mToolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
             setSupportActionBar(mToolbar);
         }
     }

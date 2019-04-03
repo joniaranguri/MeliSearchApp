@@ -1,5 +1,7 @@
 package com.aranguriapps.joni.melisearchapp.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class ItemSearch {
@@ -59,4 +61,15 @@ public class ItemSearch {
     }
 
     private String description;
+
+    public String getLinkMercadolibre() {
+        return linkMercadolibre;
+    }
+
+    public void setLinkMercadolibre(String linkMercadolibre) {
+        this.linkMercadolibre = linkMercadolibre;
+    }
+
+    @SerializedName("permalink")
+    private String linkMercadolibre;
 }

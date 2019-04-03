@@ -24,9 +24,17 @@
         app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
         app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
         app:searchSuggestionIcon="@drawable/ic_suggestion"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/white"
         android:textColorHint="#FFFFFF"
         />
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="30sp"
+    android:text="Estas listo para realizar una busqueda en MERCADOLIBRE?
+Tocá el icono de la lupa..."
+    android:textColor="@android:color/white"
 
+    android:layout_centerInParent="true"/>
 </RelativeLayout>
