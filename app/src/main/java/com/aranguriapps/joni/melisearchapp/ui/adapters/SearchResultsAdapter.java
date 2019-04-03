@@ -101,8 +101,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyItemRangeInserted(getItemCount() - 1, artists.size());
     }
 
-    public void replace(ArrayList<ItemSearch> artists){
-        this.itemSearches = artists;
+    public void replace(ArrayList<ItemSearch> items){
+        this.itemSearches = items;
         notifyDataSetChanged();
     }
 

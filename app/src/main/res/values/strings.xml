@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">MeliSearchApp</string>
-    <string name="failed_search">Failed search</string>
-    <string name="network_error">Network error</string>
-    <string name="server_error">Server error</string>
+    <string name="failed_search">Busqueda fallida</string>
+    <string name="network_error">Error de conexión</string>
+    <string name="server_error">Error de Servidor</string>
     <string name="pesos_sig">$</string>
     <string name="item_id_to_search">item_id_to_search</string>
     <string name="_FOTOS">FOTOS</string>
     <string name="GO_TO_MERCADOLIBRE">IR A MERCADOLIBRE</string>
-    <string name="Buscar">Buscar...</string>
+    <string name="Buscar">Buscar</string>
     <string name="Description">Descripción</string>
+    <string name="not_details">No se pudo obtener los detalles del producto</string>
+    <string name="not_description">No se pudo obtener la descripción del producto</string>
 </resources>

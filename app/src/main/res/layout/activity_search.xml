@@ -32,9 +32,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="30sp"
-    android:text="Estas listo para realizar una busqueda en MERCADOLIBRE?
+    android:text="Para buscar
 Tocá el icono de la lupa..."
     android:textColor="@android:color/white"
-
+    android:layout_margin="30dp"
     android:layout_centerInParent="true"/>
 </RelativeLayout>

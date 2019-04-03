@@ -8,6 +8,7 @@ public interface ItemDetailView {
     void displayFoundItem(ItemSearch itemDetail);
 
     void displayFailedGetDetails();
+    void displayFailedGetDescription();
 
     void displayNetworkError();
 

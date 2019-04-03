@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.aranguriapps.joni.melisearchapp.R;
-
+/**No se llego a implementar*/
 public class WelcomeActivity extends AppCompatActivity {
 
     @Override

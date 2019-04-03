@@ -1,10 +1,35 @@
 package com.aranguriapps.joni.melisearchapp.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class ItemSearch {
+public class ItemSearch implements Parcelable  {
+    protected ItemSearch(Parcel in) {
+        id = in.readString();
+        thumbnail = in.readString();
+        title = in.readString();
+        price = in.readString();
+        pictures = in.createTypedArrayList(MeliSearchImage.CREATOR);
+        description = in.readString();
+        linkMercadolibre = in.readString();
+    }
+
+    public static final Creator<ItemSearch> CREATOR = new Creator<ItemSearch>() {
+        @Override
+        public ItemSearch createFromParcel(Parcel in) {
+            return new ItemSearch(in);
+        }
+
+        @Override
+        public ItemSearch[] newArray(int size) {
+            return new ItemSearch[size];
+        }
+    };
+
     public String getId() {
         return id;
     }
@@ -72,4 +97,29 @@ public class ItemSearch {
 
     @SerializedName("permalink")
     private String linkMercadolibre;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+       if(pictures!=null) parcel.writeArray( pictures.toArray());
+        parcel.writeString(id);
+        parcel.writeString(linkMercadolibre);
+        parcel.writeString(description);
+        parcel.writeString(price);
+        parcel.writeString(thumbnail);
+        parcel.writeString(title);
+
+
+
+
+    }
+
+
+
+
+
 }

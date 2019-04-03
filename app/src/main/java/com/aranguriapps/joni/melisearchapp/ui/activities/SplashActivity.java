@@ -28,7 +28,6 @@ public class SplashActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
 
-//Ccrro tres threads para mostrar un splash con animacion y tres imagenes
         Thread timerThread = new Thread(){
             public void run() {
 
@@ -73,12 +72,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void cerrarSplash() {
-        //me voy a al login
-
-        Intent intent ;
-        if(true)
-            intent =  new Intent(SplashActivity.this,SearchActivity.class);
-        else  new Intent(SplashActivity.this,WelcomeActivity.class);
+        Intent intent =  new Intent(SplashActivity.this,SearchActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_left, R.anim.nada);
 
@@ -86,7 +80,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        // para que no siga activa la activity
         super.onPause();
         finish();
     }

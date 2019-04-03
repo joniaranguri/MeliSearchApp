@@ -19,19 +19,32 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import butterknife.BindView;
 
 public class ResultsActivity extends BaseActivity{
-        private QueryCallBackListener queryCallBackListener;
+    private static final String TAG = ResultsActivity.class.getName();
+    private QueryCallBackListener queryCallBackListener;
         @BindView(R.id.search_view)
         MaterialSearchView searchView;
-    private String queryFromSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupToolbar("Búsqueda");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+       try{
+           getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           getSupportActionBar().setDisplayShowHomeEnabled(true);
+       }catch (Exception e){
+           Log.i(TAG,"Error al setear la toolbar");
+       }
 
-this.queryFromSearch=getIntent().getStringExtra("queryFromSearch");
+
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String queryFromSearch = getIntent().getStringExtra("queryFromSearch");
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -48,7 +61,7 @@ this.queryFromSearch=getIntent().getStringExtra("queryFromSearch");
                 if (queryCallBackListener != null) {
                     queryCallBackListener.onCallBack(query);
                 }
-             searchView.clearFocus();
+                searchView.clearFocus();
                 return true;
             }
 
@@ -56,11 +69,8 @@ this.queryFromSearch=getIntent().getStringExtra("queryFromSearch");
             public boolean onQueryTextChange(String newText) { return true; }
 
         });
-
-        searchView.setQuery(this.queryFromSearch,true);
-
-
-
+        if(queryFromSearch!=null)
+        searchView.setQuery(queryFromSearch,true);
     }
 
     @Override
@@ -96,7 +106,7 @@ this.queryFromSearch=getIntent().getStringExtra("queryFromSearch");
         return true;
     }
     public interface QueryCallBackListener {
-        void onCallBack(String query);// pass any parameter in your onCallBack which you want to return
+        void onCallBack(String query);
     }
 
 

@@ -34,7 +34,7 @@ detailView.displayFoundItem(item);
 
     @Override
     public void onFailedGetDetail() {
-
+    detailView.displayFailedGetDetails();
     }
     public void getDetailsItem(String itemId){
 
@@ -51,6 +51,6 @@ detailView.displayFoundItem(item);
 
     @Override
     public void onFailedGetDescription() {
-
+        detailView.displayFailedGetDescription();
     }
 }

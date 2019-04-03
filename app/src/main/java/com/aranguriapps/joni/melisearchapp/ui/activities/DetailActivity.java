@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -34,6 +35,7 @@ import butterknife.BindView;
 
 public class DetailActivity extends BaseActivity implements ItemDetailView {
 
+    private static final String TAG = DetailActivity.class.getName();
     @Inject
     ItemDetailPresenter itemDetailPresenter;
     @Inject
@@ -48,7 +50,6 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
     TextView textViewDescription;
     @BindView(R.id.txt_desc)
     TextView textTitleDesc;
-    private String itemToSearch;
     @BindView(R.id.btn_go_to_meli)
     Button btnLinkMeli;
     @BindView(R.id.pbLoading)
@@ -62,10 +63,14 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupToolbar("Producto");
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }catch (Exception e){
+            Log.i(TAG,"Error al setear la toolbar");
+        }
 
-        itemToSearch = getIntent().getStringExtra(getString(R.string.item_id_to_search));
-        itemDetailPresenter.getDetailsItem(itemToSearch);
-        itemDetailPresenter.getItemDescription(itemToSearch);
     }
 
     @Override
@@ -108,30 +113,35 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
         }
         isDetailsLoaded= true;
 
-        this.btnLinkMeli.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri webpage = Uri.parse(itemDetail.getLinkMercadolibre());
-                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
+        this.btnLinkMeli.setOnClickListener(view -> {
+            Uri webpage = Uri.parse(itemDetail.getLinkMercadolibre());
+            Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
             }
         });
     }
 
     @Override
     public void displayFailedGetDetails() {
+        Toast.makeText(this, getString(R.string.not_details), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void displayFailedGetDescription() {
+        Toast.makeText(this, getString(R.string.not_description), Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void displayNetworkError() {
-
+        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayServerError() {
+        Toast.makeText(this, getString(R.string.server_error), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -144,5 +154,18 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
             textTitleDesc.setText(getString(R.string.Description));
         }
         isDescriptionLoaded= true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String itemToSearch = getIntent().getStringExtra(getString(R.string.item_id_to_search));
+        itemDetailPresenter.getDetailsItem(itemToSearch);
+        itemDetailPresenter.getItemDescription(itemToSearch);
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

@@ -1,14 +1,18 @@
 package com.aranguriapps.joni.melisearchapp.ui.fragments;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +45,7 @@ import static android.view.View.GONE;
 
 
 public class ItemSearchFragment extends BaseFragment implements ItemSearchView, SearchResultsAdapter.ItemClickListener, ResultsActivity.QueryCallBackListener {
-
+    private final String TAG = ItemSearchFragment.class.getName();
     @Inject
     ItemSearchPresenter mSearchPresenter;
 
@@ -52,6 +56,9 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     RecyclerView mItemResultsList;
     @BindView(R.id.pbLoading)
     ProgressBar pbLoading;
+    private ArrayList<ItemSearch> mItems;
+    private boolean notToSearch;
+    private int currentOrientation;
 
     @Override
     protected int getFragmentLayout() {
@@ -84,13 +91,28 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((ResultsActivity) getActivity()).setQueryCallBackListener(this);
-        //TODO memory manage
+        try {
+            ((ResultsActivity) getActivity()).setQueryCallBackListener(this);
+        }catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+     try {
+         ((ResultsActivity) getActivity()).setQueryCallBackListener(null);
+     }catch (Exception e){
+         Log.e(TAG,e.getMessage());
+     }
+
     }
 
     @Override
     public void setupList() {
-        mItemResultsList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
+        mItemResultsList.setLayoutManager(new StaggeredGridLayoutManager(this.currentOrientation== Configuration.ORIENTATION_LANDSCAPE?3:2, StaggeredGridLayoutManager.VERTICAL));
         mItemResultsList.setAdapter(mResultsAdapter);
     }
 
@@ -106,9 +128,10 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     }
 
     @Override
-    public void displayFoundItems(ArrayList<ItemSearch> artists) {
+    public void displayFoundItems(ArrayList<ItemSearch> items) {
 
-            mResultsAdapter.replace(artists);
+            mResultsAdapter.replace(this.mItems=items);
+
             pbLoading.setVisibility(GONE);
     }
 
@@ -141,6 +164,30 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @Override
     public void onCallBack(String query) {
+        if(notToSearch)
+        {   displayFoundItems(this.mItems);
+            notToSearch=false;
+        }
+        else
         mSearchPresenter.searchItems(query);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("items",mItems);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null){
+
+            mItems = savedInstanceState.getParcelableArrayList("items");
+            this.notToSearch= true;
+        }
+         currentOrientation = getResources().getConfiguration().orientation;
+
     }
 }
