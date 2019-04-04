@@ -25,12 +25,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PresenterUnitTest {
+public class ItemSearchPresenterUnitTest {
     private ItemSearchPresenter itemSearchPresenter;
     private ItemSearchView mockedview;
     private ItemSearchInteractor mockedInteractor;
     private Context mockedContext;
-    ItemsSearchCallback mockedCallback;
 
     @Before
     public void conifigurationMethod() {
@@ -38,7 +37,6 @@ public class PresenterUnitTest {
         mockedInteractor = mock(ItemSearchInteractor.class);
         itemSearchPresenter = new ItemSearchPresenter(mockedview, mockedInteractor);
         mockedContext = mock(Context.class);
-        mockedCallback= mock(ItemsSearchCallback.class);
     }
 
     @Test
@@ -53,5 +51,7 @@ public class PresenterUnitTest {
         itemSearchPresenter.searchItems("algo", mockedContext);
         verify(mockedview, times(1)).displayNetworkError();
  }
+
+
 
 }

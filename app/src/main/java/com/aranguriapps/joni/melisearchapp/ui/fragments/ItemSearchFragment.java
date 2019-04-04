@@ -164,6 +164,7 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
             }
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(recicler_container.getId(),nestedFragment).commit();
+        mResultsAdapter.replace(null);
         this.isErrorShowed= true;
     }
 
