@@ -23,10 +23,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>{
+public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
 
     ArrayList<ItemSearch> itemSearches;
-   private ItemClickListener clickListener;
+    private ItemClickListener clickListener;
     Context context;
 
     public SearchResultsAdapter(Context context) {
@@ -47,14 +47,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         holder.setItemTitle(currentItem.getTitle());
 
-        if(currentItem.getThumbnail() != null)
+        if (currentItem.getThumbnail() != null)
             holder.setItemThumbnail(currentItem.getThumbnail());
         holder.setItemPrice(currentItem.getPrice());
     }
 
     @Override
     public int getItemCount() {
-        return itemSearches.isEmpty() ? 0 : itemSearches.size();
+        return itemSearches == null || itemSearches.isEmpty() ? 0 : itemSearches.size();
 
     }
 
@@ -73,8 +73,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     /**
      * Add item in determined index
+     * <p>
+     * / * @param  itemSearch   The event to be inserted
      *
-    / * @param  itemSearch   The event to be inserted
      * @param position Index for the new event
      */
     public void addItem(ItemSearch itemSearch, int position) {
@@ -92,7 +93,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
      * Add a bunch of items
      *
      * @param artists Collection to add
-     * */
+     */
     public void addAll(List<ItemSearch> artists) {
         if (artists == null)
             throw new NullPointerException("The items cannot be null");
@@ -101,14 +102,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyItemRangeInserted(getItemCount() - 1, artists.size());
     }
 
-    public void replace(ArrayList<ItemSearch> items){
+    public void replace(ArrayList<ItemSearch> items) {
         this.itemSearches = items;
         notifyDataSetChanged();
     }
 
     /**
      * Delete all the items
-     * */
+     */
     public void clear() {
         if (!itemSearches.isEmpty()) {
             itemSearches.clear();
@@ -120,11 +121,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         this.clickListener = clickListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-         static final int IMG_SIZE_DP = 112;
+        static final int IMG_SIZE_DP = 112;
 
-         int IMG_SIZE_PX;
+        int IMG_SIZE_PX;
 
         @BindView(R.id.img_thum_item)
         ImageView itemImage;
@@ -134,9 +135,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         @BindView(R.id.txt_item_price)
         TextView itemPrice;
 
-         ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,19 +156,20 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             IMG_SIZE_PX = IMG_SIZE_DP * (metrics.densityDpi / 160);
         }
 
-        void setItemTitle(String name){
+        void setItemTitle(String name) {
             itemTitle.setText(name);
         }
-        void setItemPrice(String price){
+
+        void setItemPrice(String price) {
             itemPrice.setText(context.getResources().getString(R.string.pesos_sig).concat(price));
         }
 
 
-         void setItemThumbnail(String urlImage) {
+        void setItemThumbnail(String urlImage) {
             Picasso.get()
                     .load(MercadoLibreUtils.getImageGoodQuality(urlImage))
                     .placeholder(R.drawable.background_item)
-                  // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
+                    // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
                     .into(itemImage);
         }
     }
@@ -175,11 +177,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     /**
      * A simple interface to be configured in a RecyclerView
      */
-    public interface ItemClickListener{
+    public interface ItemClickListener {
         /**
          * This method will be invoked when an item from the list be clicked
+         *
          * @param idItem of Item clicked
-         * */
+         */
         void onItemClicked(String idItem);
     }
 }

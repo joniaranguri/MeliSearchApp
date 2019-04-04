@@ -11,6 +11,8 @@ import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemSearchView;
 
 import java.util.ArrayList;
 
+import static com.aranguriapps.joni.melisearchapp.io.api.Constants.ML_ARG;
+
 public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCallback {
     public static final String LOG_TAG = ItemSearchPresenter.class.getSimpleName();
     ItemSearchView searchView;
@@ -46,7 +48,7 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
     }
     public void searchItems(String query,Context context) {
     if(Utils.isOnline(context))
-        searchInteractor.performSearch("MLA",  query, this);
+        searchInteractor.performSearch(ML_ARG,  query, this);
     else searchView.displayNetworkError();
 
     }
