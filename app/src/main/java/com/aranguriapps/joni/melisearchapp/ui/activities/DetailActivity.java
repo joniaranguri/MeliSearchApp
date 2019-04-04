@@ -3,6 +3,8 @@ package com.aranguriapps.joni.melisearchapp.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +27,8 @@ import com.aranguriapps.joni.melisearchapp.module.ItemSearchModule;
 import com.aranguriapps.joni.melisearchapp.presenter.ItemDetailPresenter;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 import com.aranguriapps.joni.melisearchapp.ui.adapters.ImageAdapter;
+import com.aranguriapps.joni.melisearchapp.ui.fragments.ErrorFragment;
+import com.aranguriapps.joni.melisearchapp.ui.fragments.NoInternetFragment;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemDetailView;
 
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class DetailActivity extends BaseActivity implements ItemDetailView {
+public class DetailActivity extends BaseActivity implements ItemDetailView ,ErrorFragment.OnFragmentInteractionListener,NoInternetFragment.OnFragmentInteractionListener{
 
     private static final String TAG = DetailActivity.class.getName();
     @Inject
@@ -59,6 +63,8 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
     ViewPager viewPager;
     private boolean isDescriptionLoaded;
     private boolean isDetailsLoaded;
+    private boolean isShowingError;
+    private Fragment nestedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,24 +130,41 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
 
     @Override
     public void displayFailedGetDetails() {
-        Toast.makeText(this, getString(R.string.not_details), Toast.LENGTH_SHORT).show();
+        if(!isShowingError)
+            manageError(R.string.not_details);
 
+    }
+
+    private void manageError(int typeError) {
+        switch (typeError){
+            case R.string.network_error:
+                nestedFragment= new NoInternetFragment();
+                break;
+            default:
+                    nestedFragment= new ErrorFragment();
+
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.containerDetail,nestedFragment).commit();
+        this.isShowingError= true;
     }
 
     @Override
     public void displayFailedGetDescription() {
-        Toast.makeText(this, getString(R.string.not_description), Toast.LENGTH_SHORT).show();
-
+        if(!isShowingError)
+            manageError(R.string.not_details);
     }
 
     @Override
     public void displayNetworkError() {
-        Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        if(!isShowingError)
+            manageError(R.string.network_error);
     }
 
     @Override
     public void displayServerError() {
-        Toast.makeText(this, getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        if(!isShowingError)
+            manageError(R.string.server_error);
 
     }
 
@@ -160,12 +183,17 @@ public class DetailActivity extends BaseActivity implements ItemDetailView {
     protected void onStart() {
         super.onStart();
         String itemToSearch = getIntent().getStringExtra(getString(R.string.item_id_to_search));
-        itemDetailPresenter.getDetailsItem(itemToSearch);
-        itemDetailPresenter.getItemDescription(itemToSearch);
+        itemDetailPresenter.getDetailsItem(itemToSearch,this);
+        itemDetailPresenter.getItemDescription(itemToSearch,this);
     }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

@@ -1,6 +1,9 @@
 package com.aranguriapps.joni.melisearchapp.presenter;
 
+import android.content.Context;
+
 import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
+import com.aranguriapps.joni.melisearchapp.common.Utils;
 import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
 import com.aranguriapps.joni.melisearchapp.interactor.ItemSearchInteractor;
 import com.aranguriapps.joni.melisearchapp.io.callback.ItemDetailCallback;
@@ -36,13 +39,17 @@ detailView.displayFoundItem(item);
     public void onFailedGetDetail() {
     detailView.displayFailedGetDetails();
     }
-    public void getDetailsItem(String itemId){
+    public void getDetailsItem(String itemId, Context context){
 
-        searchInteractor.getItemDetail(itemId,this);
+        if(Utils.isOnline(context))
+            searchInteractor.getItemDetail(itemId,this);
+        else detailView.displayNetworkError();
     }
 
-    public void getItemDescription(String itemId){
+    public void getItemDescription(String itemId,Context context){
+        if(Utils.isOnline(context))
         searchInteractor.getItemDescription(itemId,this);
+        else detailView.displayNetworkError();
     }
     @Override
     public void onDescriptionFound(ItemDescription itemDescription) {

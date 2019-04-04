@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.aranguriapps.joni.melisearchapp.R;
@@ -39,7 +42,9 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.BindDimen;
 import butterknife.BindView;
+import butterknife.BindViews;
 
 import static android.view.View.GONE;
 
@@ -51,7 +56,8 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @Inject
     SearchResultsAdapter mResultsAdapter;
-
+    @BindView(R.id.recicler_container)
+    RelativeLayout recicler_container;
     @BindView(R.id.list_items)
     RecyclerView mItemResultsList;
     @BindView(R.id.pbLoading)
@@ -59,6 +65,8 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     private ArrayList<ItemSearch> mItems;
     private boolean notToSearch;
     private int currentOrientation;
+    private boolean isErrorShowed;
+    private Fragment nestedFragment;
 
     @Override
     protected int getFragmentLayout() {
@@ -138,17 +146,35 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @Override
     public void displayFailedSearch() {
-        Toast.makeText(CONTEXT, R.string.failed_search, Toast.LENGTH_SHORT).show();
+       manageErrot(R.string.failed_search);
+    }
+
+    private void manageErrot(int typeError) {
+
+        switch (typeError){
+            case R.string.failed_search:
+                nestedFragment = new NotFoundFragment();
+                break;
+            case R.string.network_error:
+                nestedFragment = new NoInternetFragment();
+                break;
+            default :
+                nestedFragment = new ErrorFragment();
+
+            }
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(recicler_container.getId(),nestedFragment).commit();
+        this.isErrorShowed= true;
     }
 
     @Override
     public void displayNetworkError() {
-        Toast.makeText(CONTEXT, R.string.network_error, Toast.LENGTH_SHORT).show();
+    manageErrot(R.string.network_error);
     }
 
     @Override
     public void displayServerError() {
-        Toast.makeText(CONTEXT, R.string.server_error, Toast.LENGTH_SHORT).show();
+    manageErrot(R.string.server_error);
     }
 
     @Override
@@ -168,8 +194,16 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
         {   displayFoundItems(this.mItems);
             notToSearch=false;
         }
-        else
-        mSearchPresenter.searchItems(query);
+        else{
+            if(this.isErrorShowed)
+            {
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.remove(this.nestedFragment).commit();
+                isErrorShowed= false;
+            }
+            mSearchPresenter.searchItems(query,CONTEXT);
+        }
+
     }
 
 

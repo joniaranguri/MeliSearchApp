@@ -1,5 +1,6 @@
 package com.aranguriapps.joni.melisearchapp.ui.activities;
 
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,11 +15,14 @@ import com.aranguriapps.joni.melisearchapp.common.BaseActivity;
 import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
 import com.aranguriapps.joni.melisearchapp.io.api.MeliSearchApiConstants;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
+import com.aranguriapps.joni.melisearchapp.ui.fragments.ErrorFragment;
+import com.aranguriapps.joni.melisearchapp.ui.fragments.NoInternetFragment;
+import com.aranguriapps.joni.melisearchapp.ui.fragments.NotFoundFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.BindView;
 
-public class ResultsActivity extends BaseActivity{
+public class ResultsActivity extends BaseActivity implements NotFoundFragment.OnFragmentInteractionListener,NoInternetFragment.OnFragmentInteractionListener,ErrorFragment.OnFragmentInteractionListener {
     private static final String TAG = ResultsActivity.class.getName();
     private QueryCallBackListener queryCallBackListener;
         @BindView(R.id.search_view)
@@ -105,6 +109,12 @@ public class ResultsActivity extends BaseActivity{
         searchView.setMenuItem(item);
         return true;
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     public interface QueryCallBackListener {
         void onCallBack(String query);
     }
