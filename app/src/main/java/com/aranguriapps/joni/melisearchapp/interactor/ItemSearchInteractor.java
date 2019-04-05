@@ -14,12 +14,12 @@ public class ItemSearchInteractor {
     public ItemSearchInteractor(MeliSearchApiService apiService) {
         this.apiService = apiService;
     }
-    public void performSearch(String site,String item, ItemsSearchCallback callback) {
+    public void performSearch(String site, String item, ItemsSearchCallback callback, String offset) {
 
-        apiService.searchItems(site,item)
+        apiService.searchItems(site,item,offset)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(itemsSearchResponse -> {callback.onItemsFound(itemsSearchResponse.getItems());}
+                .subscribe(itemsSearchResponse -> {callback.onItemsFound(itemsSearchResponse);}
                         , throwable -> {callback.onFailedSearch();
                         });
     }

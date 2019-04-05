@@ -19,4 +19,5 @@ public class MeliSearchApiConstants {
     public static final String GET_ITEM_BY_ID = "/items/{" + ID_ITEM + "}";
     public static final String  GET_DESCRIPTION_BY_ID = "/items/{" + ID_ITEM + "}"+DESCRIPTION;
 
+    public static final String OFFSET = "offset";
 }

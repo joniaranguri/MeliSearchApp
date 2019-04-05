@@ -9,14 +9,13 @@ public  class Utils {
 
      public static boolean isOnline(Context context) {
                ConnectivityManager connectivityManager;
-         NetworkInfo wifiInfo, mobileInfo;
          boolean connected = false;
          try {
              connectivityManager = (ConnectivityManager) context
                      .getSystemService(Context.CONNECTIVITY_SERVICE);
 
              NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-             connected = networkInfo != null && networkInfo.isAvailable() &&
+             connected = (networkInfo != null) && networkInfo.isAvailable() &&
                      networkInfo.isConnected();
              return connected;
 

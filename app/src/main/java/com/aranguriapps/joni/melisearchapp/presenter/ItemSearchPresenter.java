@@ -4,12 +4,10 @@ import android.content.Context;
 
 import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
 import com.aranguriapps.joni.melisearchapp.common.Utils;
-import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
 import com.aranguriapps.joni.melisearchapp.interactor.ItemSearchInteractor;
 import com.aranguriapps.joni.melisearchapp.io.callback.ItemsSearchCallback;
+import com.aranguriapps.joni.melisearchapp.io.model.ItemSearchResponse;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemSearchView;
-
-import java.util.ArrayList;
 
 import static com.aranguriapps.joni.melisearchapp.io.api.Constants.ML_ARG;
 
@@ -34,9 +32,9 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
     }
 
     @Override
-    public void onItemsFound(ArrayList<ItemSearch> items) {
-        if(items.size()>0)
-    searchView.displayFoundItems(items);
+    public void onItemsFound(ItemSearchResponse itemSearchResponse) {
+        if(itemSearchResponse.getItems()!=null&&itemSearchResponse.getItems().size()>0)
+    searchView.displayFoundItems(itemSearchResponse);
         else
             searchView.displayFailedSearch();
     }
@@ -46,9 +44,9 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
         searchView.displayServerError();
 
     }
-    public void searchItems(String query,Context context) {
+    public void searchItems(String query, Context context, String offset) {
     if(Utils.isOnline(context))
-        searchInteractor.performSearch(ML_ARG,  query, this);
+        searchInteractor.performSearch(ML_ARG,  query, this,offset);
     else searchView.displayNetworkError();
 
     }

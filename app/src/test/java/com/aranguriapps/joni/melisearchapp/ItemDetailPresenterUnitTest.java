@@ -8,11 +8,13 @@ import com.aranguriapps.joni.melisearchapp.io.callback.ItemDetailCallback;
 import com.aranguriapps.joni.melisearchapp.presenter.ItemDetailPresenter;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemDetailView;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

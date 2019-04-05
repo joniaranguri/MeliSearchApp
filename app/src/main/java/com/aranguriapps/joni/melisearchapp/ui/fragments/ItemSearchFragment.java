@@ -1,56 +1,53 @@
 package com.aranguriapps.joni.melisearchapp.ui.fragments;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.aranguriapps.joni.melisearchapp.R;
 import com.aranguriapps.joni.melisearchapp.common.BaseFragment;
 import com.aranguriapps.joni.melisearchapp.common.BasePresenter;
+import com.aranguriapps.joni.melisearchapp.common.MercadoLibreUtils;
 import com.aranguriapps.joni.melisearchapp.component.DaggerItemSearchComponent;
 import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
+import com.aranguriapps.joni.melisearchapp.io.model.ItemSearchResponse;
 import com.aranguriapps.joni.melisearchapp.module.ItemSearchModule;
 import com.aranguriapps.joni.melisearchapp.presenter.ItemSearchPresenter;
 import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 import com.aranguriapps.joni.melisearchapp.ui.activities.DetailActivity;
 import com.aranguriapps.joni.melisearchapp.ui.activities.ResultsActivity;
-import com.aranguriapps.joni.melisearchapp.ui.activities.SearchActivity;
+import com.aranguriapps.joni.melisearchapp.ui.adapters.PaginationScrollListener;
 import com.aranguriapps.joni.melisearchapp.ui.adapters.SearchResultsAdapter;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemSearchView;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
-import butterknife.BindViews;
 
-import static android.view.View.GONE;
 
 
 public class ItemSearchFragment extends BaseFragment implements ItemSearchView, SearchResultsAdapter.ItemClickListener, ResultsActivity.QueryCallBackListener {
     private final String TAG = ItemSearchFragment.class.getName();
+    private final int OFFSET_START = 0;
+
+    private boolean isLoading = false;
+    private int offset ;
+
+
+
     @Inject
     ItemSearchPresenter mSearchPresenter;
 
@@ -67,6 +64,8 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     private int currentOrientation;
     private boolean isErrorShowed;
     private Fragment nestedFragment;
+    private String queryToSearch;
+    private int limit;
 
     @Override
     protected int getFragmentLayout() {
@@ -119,15 +118,34 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @Override
     public void setupList() {
+        StaggeredGridLayoutManager layoutManager =new StaggeredGridLayoutManager(this.currentOrientation== Configuration.ORIENTATION_LANDSCAPE?3:2, StaggeredGridLayoutManager.VERTICAL);
 
-        mItemResultsList.setLayoutManager(new StaggeredGridLayoutManager(this.currentOrientation== Configuration.ORIENTATION_LANDSCAPE?3:2, StaggeredGridLayoutManager.VERTICAL));
+        mItemResultsList.setLayoutManager(layoutManager);
         mItemResultsList.setAdapter(mResultsAdapter);
+        mItemResultsList.addOnScrollListener(new PaginationScrollListener( layoutManager){
+            @Override
+            protected void loadMoreItems() {
+
+                loadNextPage();
+            }
+
+            @Override
+            public boolean isLastPage() {
+
+                return offset> MercadoLibreUtils.MAX_ITEMS_OFFSET_WITHOUT_TOKEN;
+            }
+
+            @Override
+            public boolean isLoading() {
+               return isLoading;
+            }
+        });
     }
 
-
-
-
-
+    private void loadNextPage() {
+        isLoading= true;
+        mSearchPresenter.searchItems(this.queryToSearch,CONTEXT,String.valueOf(this.offset));
+    }
 
 
     @Override
@@ -136,11 +154,20 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     }
 
     @Override
-    public void displayFoundItems(ArrayList<ItemSearch> items) {
+    public void displayFoundItems(ItemSearchResponse itemSearchResponse) {
+        this.limit=itemSearchResponse.getPaging().getLimit();
+        this.offset= itemSearchResponse.getPaging().getOffset();
+        if(isLoading){
 
-            mResultsAdapter.replace(this.mItems=items);
+            mResultsAdapter.addAll(itemSearchResponse.getItems());
+            offset += limit;
+            isLoading= false;
+        }
+            else{
+            mResultsAdapter.replace(itemSearchResponse.getItems());
+        }
 
-            pbLoading.setVisibility(GONE);
+            pbLoading.setVisibility(View.INVISIBLE);
     }
 
 
@@ -191,8 +218,9 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
 
     @Override
     public void onCallBack(String query) {
+        this.queryToSearch= query;
         if(notToSearch)
-        {   displayFoundItems(this.mItems);
+        {   mResultsAdapter.replace(this.mItems); //this is called when return from saved instance
             notToSearch=false;
         }
         else{
@@ -202,7 +230,8 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
                 transaction.remove(this.nestedFragment).commit();
                 isErrorShowed= false;
             }
-            mSearchPresenter.searchItems(query,CONTEXT);
+            mSearchPresenter.searchItems(query,CONTEXT,String.valueOf(this.OFFSET_START));
+            pbLoading.setVisibility(View.VISIBLE);
         }
 
     }
@@ -211,16 +240,19 @@ public class ItemSearchFragment extends BaseFragment implements ItemSearchView, 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        this.mItems= mResultsAdapter.getItemSearches();
         outState.putParcelableArrayList("items",mItems);
+        outState.putInt("offset",offset);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState!=null){
-
+            this.offset= savedInstanceState.getInt("offset",0);
             mItems = savedInstanceState.getParcelableArrayList("items");
             this.notToSearch= true;
+            pbLoading.setVisibility(View.INVISIBLE);
         }
          currentOrientation = getResources().getConfiguration().orientation;
 

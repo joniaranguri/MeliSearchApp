@@ -13,7 +13,8 @@ public interface MeliSearchApiService {
 
     @GET(MeliSearchApiConstants.ITEMS_SEARCH_URL)
     Observable<ItemSearchResponse> searchItems(@Path(MeliSearchApiConstants.SITE_PATH) String site,
-                                               @Query(MeliSearchApiConstants.QUERY_TO_SEARCH) String item);
+                                               @Query(MeliSearchApiConstants.QUERY_TO_SEARCH) String item,
+                                               @Query(MeliSearchApiConstants.OFFSET) String offset);
     @GET(MeliSearchApiConstants.GET_ITEM_BY_ID)
     Observable<ItemSearch> getItemById(@Path(MeliSearchApiConstants.ID_ITEM) String id_item);
 

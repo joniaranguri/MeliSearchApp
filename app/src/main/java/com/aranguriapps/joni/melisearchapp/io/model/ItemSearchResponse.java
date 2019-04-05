@@ -14,6 +14,17 @@ public class ItemSearchResponse {
     public ArrayList<ItemSearch> getItems() {
         return itemSearches;
     }
+    public void getItems(ArrayList<ItemSearch> items) {
+         this.itemSearches=items;
+    }
+    private  Page paging;
+    public Page getPaging() {
+        return paging;
+    }
+
+    public void setPaging(Page paging) {
+        this.paging = paging;
+    }
 
 
 

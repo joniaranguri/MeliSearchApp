@@ -1,8 +1,6 @@
 package com.aranguriapps.joni.melisearchapp.ui.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import com.aranguriapps.joni.melisearchapp.R;
 import com.aranguriapps.joni.melisearchapp.common.MercadoLibreUtils;
 import com.aranguriapps.joni.melisearchapp.domain.ItemSearch;
-import com.aranguriapps.joni.melisearchapp.ui.activities.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,7 +22,11 @@ import butterknife.ButterKnife;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.ViewHolder> {
 
-    ArrayList<ItemSearch> itemSearches;
+    public ArrayList<ItemSearch> getItemSearches() {
+        return itemSearches;
+    }
+
+    private ArrayList<ItemSearch> itemSearches;
     private ItemClickListener clickListener;
     Context context;
 
@@ -92,14 +93,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     /**
      * Add a bunch of items
      *
-     * @param artists Collection to add
+     * @param items Collection to add
      */
-    public void addAll(List<ItemSearch> artists) {
-        if (artists == null)
+    public void addAll(List<ItemSearch> items) {
+        if (items == null)
             throw new NullPointerException("The items cannot be null");
 
-        this.itemSearches.addAll(artists);
-        notifyItemRangeInserted(getItemCount() - 1, artists.size());
+        this.itemSearches.addAll(items);
+        notifyItemRangeInserted(getItemCount() - 1, items.size());
     }
 
     public void replace(ArrayList<ItemSearch> items) {
@@ -167,7 +168,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         void setItemThumbnail(String urlImage) {
             Picasso.get()
-                    .load(MercadoLibreUtils.getImageGoodQuality(urlImage))
+                    .load(urlImage.isEmpty()?null:MercadoLibreUtils.getImageGoodQuality(urlImage))
                     .placeholder(R.drawable.background_item)
                     // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
                     .into(itemImage);
