@@ -22,22 +22,25 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import butterknife.BindView;
 
-public class ResultsActivity extends BaseActivity implements NotFoundFragment.OnFragmentInteractionListener, NoInternetFragment.OnFragmentInteractionListener, ErrorFragment.OnFragmentInteractionListener {
+public class ResultsActivity extends BaseActivity implements NotFoundFragment.OnFragmentInteractionListener,NoInternetFragment.OnFragmentInteractionListener,ErrorFragment.OnFragmentInteractionListener {
     private static final String TAG = ResultsActivity.class.getName();
     private QueryCallBackListener queryCallBackListener;
-    @BindView(R.id.search_view)
-    MaterialSearchView searchView;
+        @BindView(R.id.search_view)
+        MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupToolbar("Búsqueda");
-        try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        } catch (Exception e) {
-            Log.i(TAG, "Error al setear la toolbar");
-        }
+       try{
+           getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           getSupportActionBar().setDisplayShowHomeEnabled(true);
+       }catch (Exception e){
+           Log.i(TAG,"Error al setear la toolbar");
+       }
+
+
+
 
 
     }
@@ -49,18 +52,16 @@ public class ResultsActivity extends BaseActivity implements NotFoundFragment.On
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
-            public void onSearchViewShown() {
-            }
+            public void onSearchViewShown() { }
 
             @Override
-            public void onSearchViewClosed() {
-            }
+            public void onSearchViewClosed() {}
         });
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                SearchActivity.queryFromSearch = query;
+                SearchActivity.queryFromSearch= query;
                 if (queryCallBackListener != null) {
                     queryCallBackListener.onCallBack(query);
                 }
@@ -69,13 +70,11 @@ public class ResultsActivity extends BaseActivity implements NotFoundFragment.On
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
+            public boolean onQueryTextChange(String newText) { return true; }
 
         });
-        if (queryFromSearch != null)
-            searchView.setQuery(queryFromSearch, true);
+        if(queryFromSearch!=null)
+        searchView.setQuery(queryFromSearch,true);
     }
 
     @Override
@@ -83,14 +82,12 @@ public class ResultsActivity extends BaseActivity implements NotFoundFragment.On
         onBackPressed();
         return true;
     }
-
     public void setQueryCallBackListener(QueryCallBackListener listener) {
         this.queryCallBackListener = listener;
     }
-
     @Override
     protected int getLayout() {
-        return R.layout.activity_results;
+        return R.layout.activity_results ;
     }
 
     @Nullable
@@ -107,7 +104,7 @@ public class ResultsActivity extends BaseActivity implements NotFoundFragment.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
+        getMenuInflater().inflate(R.menu.menu_item,menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;

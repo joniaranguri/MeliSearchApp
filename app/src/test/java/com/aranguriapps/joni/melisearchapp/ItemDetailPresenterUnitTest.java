@@ -30,12 +30,12 @@ public class ItemDetailPresenterUnitTest {
     ItemDetailCallback mockedCallback;
 
     @Before
-    public void conifigurationMethod() {
+    public void configurationMethod() {
         mockedview = mock(ItemDetailView.class);
         mockedInteractor = mock(ItemSearchInteractor.class);
         itemDetailPresenter = new ItemDetailPresenter(mockedview, mockedInteractor);
         mockedContext = mock(Context.class);
-        mockedCallback= mock(ItemDetailCallback.class);
+        mockedCallback = mock(ItemDetailCallback.class);
     }
 
     @Test

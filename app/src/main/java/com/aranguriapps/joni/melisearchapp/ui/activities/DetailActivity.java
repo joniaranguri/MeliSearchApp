@@ -2,6 +2,7 @@ package com.aranguriapps.joni.melisearchapp.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -65,6 +66,9 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
     private boolean isDetailsLoaded;
     private boolean isShowingError;
     private Fragment nestedFragment;
+    private ItemSearch itemDetail;
+    private boolean notToSearch;
+    private String itemDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,12 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
             Log.i(TAG, "Error al setear la toolbar");
         }
 
+        if (savedInstanceState != null) {
+            this.itemDetail = savedInstanceState.getParcelable("itemDetail");
+            this.itemDescription = savedInstanceState.getString("itemDescription");
+            this.notToSearch = true;
+            pbLoading.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -105,7 +115,8 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
     }
 
     @Override
-    public void displayFoundItem(ItemSearch itemDetail) {
+    public void displayFoundItem(ItemSearch itemDetailSearched) {
+        this.itemDetail = itemDetailSearched;
         imageAdapter.replace(itemDetail.getPictures());
         this.textViewCantImages.setText(String.valueOf(itemDetail.getPictures().size()).concat(" " + getString(R.string._FOTOS)));
         this.textViewTitle.setText(itemDetail.getTitle());
@@ -168,8 +179,9 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
     }
 
     @Override
-    public void displayFoundDescription(String description) {
-        this.textViewDescription.setText(description);
+    public void displayFoundDescription(String descriptionSearched) {
+        this.itemDescription = descriptionSearched;
+        this.textViewDescription.setText(itemDescription);
         if (isDetailsLoaded) {
             pbLoading.setVisibility(View.GONE);
             btnLinkMeli.setVisibility(View.VISIBLE);
@@ -182,8 +194,17 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
     protected void onStart() {
         super.onStart();
         String itemToSearch = getIntent().getStringExtra(getString(R.string.item_id_to_search));
-        itemDetailPresenter.getDetailsItem(itemToSearch, this);
-        itemDetailPresenter.getItemDescription(itemToSearch, this);
+
+        if (notToSearch) {
+            displayFoundItem(this.itemDetail); //this is called when return from saved instance
+            displayFoundDescription(this.itemDescription);
+            notToSearch = false;
+        } else {
+            itemDetailPresenter.getDetailsItem(itemToSearch, this);
+            itemDetailPresenter.getItemDescription(itemToSearch, this);
+        }
+
+
     }
 
     @Override
@@ -196,4 +217,13 @@ public class DetailActivity extends BaseActivity implements ItemDetailView, Erro
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("itemDetail", this.itemDetail);
+        outState.putString("itemDescription", this.itemDescription);
+    }
+
 }

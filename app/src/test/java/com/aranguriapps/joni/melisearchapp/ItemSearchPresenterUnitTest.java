@@ -26,7 +26,7 @@ public class ItemSearchPresenterUnitTest {
     private Context mockedContext;
 
     @Before
-    public void conifigurationMethod() {
+    public void configurationMethod() {
         mockedview = mock(ItemSearchView.class);
         mockedInteractor = mock(ItemSearchInteractor.class);
         itemSearchPresenter = new ItemSearchPresenter(mockedview, mockedInteractor);
@@ -35,17 +35,16 @@ public class ItemSearchPresenterUnitTest {
 
     @Test
     public void showsErrorMessageWhenNotResults() {
-        itemSearchPresenter.onItemsFound(new ItemSearchResponse() );
+        itemSearchPresenter.onItemsFound(new ItemSearchResponse());
         verify(mockedview, times(1)).displayFailedSearch();
     }
 
     @Test
     public void showErrorMessageWhenNoConnection() {
         when(Utils.isOnline(mockedContext)).thenReturn(false);
-        itemSearchPresenter.searchItems("algo", mockedContext,"0");
+        itemSearchPresenter.searchItems("algo", mockedContext, "0");
         verify(mockedview, times(1)).displayNetworkError();
- }
-
+    }
 
 
 }
