@@ -8,10 +8,12 @@ public interface ItemDetailView {
     void displayFoundItem(ItemSearch itemDetail);
 
     void displayFailedGetDetails();
+
     void displayFailedGetDescription();
 
     void displayNetworkError();
 
     void displayServerError();
+
     void displayFoundDescription(String description);
 }

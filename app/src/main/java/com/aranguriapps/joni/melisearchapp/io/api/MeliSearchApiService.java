@@ -15,9 +15,10 @@ public interface MeliSearchApiService {
     Observable<ItemSearchResponse> searchItems(@Path(MeliSearchApiConstants.SITE_PATH) String site,
                                                @Query(MeliSearchApiConstants.QUERY_TO_SEARCH) String item,
                                                @Query(MeliSearchApiConstants.OFFSET) String offset);
+
     @GET(MeliSearchApiConstants.GET_ITEM_BY_ID)
     Observable<ItemSearch> getItemById(@Path(MeliSearchApiConstants.ID_ITEM) String id_item);
 
-     @GET(MeliSearchApiConstants.GET_DESCRIPTION_BY_ID)
+    @GET(MeliSearchApiConstants.GET_DESCRIPTION_BY_ID)
     Observable<ItemDescription> getDescriptionById(@Path(MeliSearchApiConstants.ID_ITEM) String id_item);
 }

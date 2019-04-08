@@ -11,35 +11,47 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ItemSearchInteractor {
     MeliSearchApiService apiService;
+
     public ItemSearchInteractor(MeliSearchApiService apiService) {
         this.apiService = apiService;
     }
+
     public void performSearch(String site, String item, ItemsSearchCallback callback, String offset) {
 
-        apiService.searchItems(site,item,offset)
+        apiService.searchItems(site, item, offset)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(itemsSearchResponse -> {callback.onItemsFound(itemsSearchResponse);}
-                        , throwable -> {callback.onFailedSearch();
+                .subscribe(itemsSearchResponse -> {
+                            callback.onItemsFound(itemsSearchResponse);
+                        }
+                        , throwable -> {
+                            callback.onFailedSearch();
                         });
     }
-    public void getItemDetail(String itemId,ItemDetailCallback callback){
+
+    public void getItemDetail(String itemId, ItemDetailCallback callback) {
 
 
         apiService.getItemById(itemId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(itemDetailResponse -> {callback.onItemFound(itemDetailResponse);}
-                        , throwable -> {callback.onFailedGetDetail();
+                .subscribe(itemDetailResponse -> {
+                            callback.onItemFound(itemDetailResponse);
+                        }
+                        , throwable -> {
+                            callback.onFailedGetDetail();
                         });
     }
 
-    public void getItemDescription(String itemId,ItemDetailDescriptionCallBack callback) {
+    public void getItemDescription(String itemId, ItemDetailDescriptionCallBack callback) {
         apiService.getDescriptionById(itemId)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(itemDescResponse -> {callback.onDescriptionFound(itemDescResponse);}
-                        , throwable -> {callback.onFailedGetDescription();
+                .subscribe(itemDescResponse -> {
+                            callback.onDescriptionFound(itemDescResponse);
+                        }
+                        , throwable -> {
+                            callback.onFailedGetDescription();
                         });
     }
 }

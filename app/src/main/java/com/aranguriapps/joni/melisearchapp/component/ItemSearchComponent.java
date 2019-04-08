@@ -12,12 +12,13 @@ import dagger.Component;
 @ActivityScope
 @Component(
         dependencies = MeliSearchComponent.class,
-        modules =ItemSearchModule.class
+        modules = ItemSearchModule.class
 )
 public interface ItemSearchComponent {
 
     void inject(ItemSearchFragment searchFragment);
 
     ItemSearchPresenter getPresenter();
+
     SearchResultsAdapter getAdapter();
 }

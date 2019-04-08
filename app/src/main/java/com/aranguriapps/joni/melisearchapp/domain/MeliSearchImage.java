@@ -40,7 +40,6 @@ public class MeliSearchImage implements Parcelable {
     String id;
 
 
-
     @SerializedName(Constants.URL)
     String url;
 
@@ -54,6 +53,7 @@ public class MeliSearchImage implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
 
     }
+
     private MeliSearchImage(Parcel in) {
         id = in.readString();
         url = in.readString();

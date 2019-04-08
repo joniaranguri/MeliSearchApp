@@ -21,5 +21,6 @@ import dagger.Component;
 public interface MeliSearchComponent {
 
     Context getContext();
+
     ItemSearchInteractor getItemSearchInteractor();
 }

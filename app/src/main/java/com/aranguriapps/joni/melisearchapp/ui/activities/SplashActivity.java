@@ -26,9 +26,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        fadeIn = AnimationUtils.loadAnimation(this,R.anim.fade_in);
+        fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 
-        Thread timerThread = new Thread(){
+        Thread timerThread = new Thread() {
             public void run() {
 
 
@@ -57,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                             cerrarSplash();
+                                cerrarSplash();
                             }
                         }, 3000);
 
@@ -72,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void cerrarSplash() {
-        Intent intent =  new Intent(SplashActivity.this,SearchActivity.class);
+        Intent intent = new Intent(SplashActivity.this, SearchActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_left, R.anim.nada);
 

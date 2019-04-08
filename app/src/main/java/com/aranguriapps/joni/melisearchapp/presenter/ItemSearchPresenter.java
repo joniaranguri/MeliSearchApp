@@ -20,6 +20,7 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
         searchView = view;
         searchInteractor = interactor;
     }
+
     @Override
     public void onStart() {
         searchView.setupAdapter();
@@ -33,8 +34,8 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
 
     @Override
     public void onItemsFound(ItemSearchResponse itemSearchResponse) {
-        if(itemSearchResponse.getItems()!=null&&itemSearchResponse.getItems().size()>0)
-    searchView.displayFoundItems(itemSearchResponse);
+        if (itemSearchResponse.getItems() != null && itemSearchResponse.getItems().size() > 0)
+            searchView.displayFoundItems(itemSearchResponse);
         else
             searchView.displayFailedSearch();
     }
@@ -44,10 +45,11 @@ public class ItemSearchPresenter extends BasePresenter implements ItemsSearchCal
         searchView.displayServerError();
 
     }
+
     public void searchItems(String query, Context context, String offset) {
-    if(Utils.isOnline(context))
-        searchInteractor.performSearch(ML_ARG,  query, this,offset);
-    else searchView.displayNetworkError();
+        if (Utils.isOnline(context))
+            searchInteractor.performSearch(ML_ARG, query, this, offset);
+        else searchView.displayNetworkError();
 
     }
 

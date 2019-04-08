@@ -11,13 +11,12 @@ public class MeliSearchApiConstants {
     public static final String SITES = "/sites";
 
 
+    public static final String ITEMS_SEARCH_URL = SITES + "/{" + SITE_PATH + "}" + SEARCH + "?";
+    public static final String DESCRIPTION = "/description";
 
-    public static final String ITEMS_SEARCH_URL=  SITES+"/{"+ SITE_PATH+"}"+ SEARCH+"?";
-    public static final String DESCRIPTION = "/description" ;
-
-    public static final String ID_ITEM = "ID_ITEM" ;
+    public static final String ID_ITEM = "ID_ITEM";
     public static final String GET_ITEM_BY_ID = "/items/{" + ID_ITEM + "}";
-    public static final String  GET_DESCRIPTION_BY_ID = "/items/{" + ID_ITEM + "}"+DESCRIPTION;
+    public static final String GET_DESCRIPTION_BY_ID = "/items/{" + ID_ITEM + "}" + DESCRIPTION;
 
     public static final String OFFSET = "offset";
 }

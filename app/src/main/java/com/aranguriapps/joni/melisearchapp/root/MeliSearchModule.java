@@ -16,7 +16,7 @@ import retrofit2.Retrofit;
 public class MeliSearchModule {
     private MeliSearchApp app;
 
-    public MeliSearchModule (MeliSearchApp app) {
+    public MeliSearchModule(MeliSearchApp app) {
         this.app = app;
     }
 
@@ -26,15 +26,21 @@ public class MeliSearchModule {
         return app;
     }
 
-    @Provides @Singleton public Context provideContext() {
+    @Provides
+    @Singleton
+    public Context provideContext() {
         return app;
     }
 
-    @Provides @Singleton public Retrofit provideRetrofitInstance() {
+    @Provides
+    @Singleton
+    public Retrofit provideRetrofitInstance() {
         return MeliSearchApiAdapter.getInstance();
     }
 
-    @Provides @Singleton public MeliSearchApiService provideMeliSearchApiService(Retrofit retrofit){
+    @Provides
+    @Singleton
+    public MeliSearchApiService provideMeliSearchApiService(Retrofit retrofit) {
         return retrofit.create(MeliSearchApiService.class);
     }
 

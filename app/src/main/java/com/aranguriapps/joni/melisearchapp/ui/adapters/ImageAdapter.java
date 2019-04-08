@@ -17,14 +17,17 @@ import java.util.ArrayList;
 public class ImageAdapter extends PagerAdapter {
     private Context mContext;
     private ArrayList<MeliSearchImage> picturesList;
-   public  ImageAdapter(Context context) {
+
+    public ImageAdapter(Context context) {
         mContext = context;
-        this.picturesList= new ArrayList<>();
+        this.picturesList = new ArrayList<>();
     }
-    public void replace(ArrayList<MeliSearchImage> images){
+
+    public void replace(ArrayList<MeliSearchImage> images) {
         this.picturesList = images;
         notifyDataSetChanged();
     }
+
     @Override
     public int getCount() {
         return picturesList.size();
@@ -43,7 +46,7 @@ public class ImageAdapter extends PagerAdapter {
 
         Picasso.get()
                 .load(picturesList.get(position).getUrl())
-               // .placeholder(R.drawable.plusbtn)
+                // .placeholder(R.drawable.plusbtn)
                 .into(img);
         container.addView(img, 0);
         return img;

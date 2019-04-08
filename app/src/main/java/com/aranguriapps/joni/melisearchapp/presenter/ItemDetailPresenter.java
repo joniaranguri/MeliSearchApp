@@ -11,18 +11,20 @@ import com.aranguriapps.joni.melisearchapp.io.callback.ItemDetailDescriptionCall
 import com.aranguriapps.joni.melisearchapp.io.model.ItemDescription;
 import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemDetailView;
 
-public class ItemDetailPresenter extends BasePresenter implements ItemDetailCallback,ItemDetailDescriptionCallBack {
+public class ItemDetailPresenter extends BasePresenter implements ItemDetailCallback, ItemDetailDescriptionCallBack {
 
     public static final String LOG_TAG = ItemSearchPresenter.class.getSimpleName();
     ItemDetailView detailView;
     ItemSearchInteractor searchInteractor;
+
     public ItemDetailPresenter(ItemDetailView view, ItemSearchInteractor interactor) {
         detailView = view;
         searchInteractor = interactor;
     }
+
     @Override
     public void onStart() {
-detailView.setImageAdapter();
+        detailView.setImageAdapter();
     }
 
     @Override
@@ -32,25 +34,27 @@ detailView.setImageAdapter();
 
     @Override
     public void onItemFound(ItemSearch item) {
-detailView.displayFoundItem(item);
+        detailView.displayFoundItem(item);
     }
 
     @Override
     public void onFailedGetDetail() {
-    detailView.displayFailedGetDetails();
+        detailView.displayFailedGetDetails();
     }
-    public void getDetailsItem(String itemId, Context context){
 
-        if(Utils.isOnline(context))
-            searchInteractor.getItemDetail(itemId,this);
+    public void getDetailsItem(String itemId, Context context) {
+
+        if (Utils.isOnline(context))
+            searchInteractor.getItemDetail(itemId, this);
         else detailView.displayNetworkError();
     }
 
-    public void getItemDescription(String itemId,Context context){
-        if(Utils.isOnline(context))
-        searchInteractor.getItemDescription(itemId,this);
+    public void getItemDescription(String itemId, Context context) {
+        if (Utils.isOnline(context))
+            searchInteractor.getItemDescription(itemId, this);
         else detailView.displayNetworkError();
     }
+
     @Override
     public void onDescriptionFound(ItemDescription itemDescription) {
         detailView.displayFoundDescription(itemDescription.getDescripcion());

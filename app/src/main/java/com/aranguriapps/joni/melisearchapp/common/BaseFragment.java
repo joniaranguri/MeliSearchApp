@@ -15,16 +15,9 @@ import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Pedro Antonio Hernández on 14/06/2015.
- *
- * <p>
- *     A fragment like an activity only will execute operations that affect the UI.
- *     These operations are defined by a view model and are triggered by its presenter.
- * </p>
- */
-public abstract class BaseFragment extends Fragment{
-    private final String TAG= BaseFragment.class.getName();
+
+public abstract class BaseFragment extends Fragment {
+    private final String TAG = BaseFragment.class.getName();
 
     protected Context CONTEXT;
 
@@ -69,25 +62,25 @@ public abstract class BaseFragment extends Fragment{
 
     /**
      * Specify the layout of the fragment to be inflated in the {@link BaseFragment#onCreateView(LayoutInflater, ViewGroup, Bundle)}
-     * */
+     */
     protected abstract int getFragmentLayout();
 
     /**
      * @return The presenter attached to the fragment. This must extends from {@link BasePresenter}
-     * */
+     */
     protected abstract BasePresenter getPresenter();
 
     private void injectDependencies() {
         try {
             setUpComponent(MeliSearchApp.getApp(getActivity()).getComponent());
-        }catch (Exception e){
-            Log.e(TAG,e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, e.getLocalizedMessage());
         }
     }
 
     /**
      * Replace all the annotated fields with ButterKnife annotations with the proper value
-     * */
+     */
     private void bindViews(View rootView) {
         ButterKnife.bind(this, rootView);
     }
@@ -98,7 +91,7 @@ public abstract class BaseFragment extends Fragment{
 
     /**
      * This method will setup the injector and will commit the dependencies injections.
-     * */
+     */
     protected abstract void setUpComponent(MeliSearchComponent component);
 
 }

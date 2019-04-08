@@ -37,7 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class DetailActivity extends BaseActivity implements ItemDetailView ,ErrorFragment.OnFragmentInteractionListener,NoInternetFragment.OnFragmentInteractionListener{
+public class DetailActivity extends BaseActivity implements ItemDetailView, ErrorFragment.OnFragmentInteractionListener, NoInternetFragment.OnFragmentInteractionListener {
 
     private static final String TAG = DetailActivity.class.getName();
     @Inject
@@ -70,11 +70,11 @@ public class DetailActivity extends BaseActivity implements ItemDetailView ,Erro
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupToolbar("Producto");
-        try{
+        try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }catch (Exception e){
-            Log.i(TAG,"Error al setear la toolbar");
+        } catch (Exception e) {
+            Log.i(TAG, "Error al setear la toolbar");
         }
 
     }
@@ -107,17 +107,16 @@ public class DetailActivity extends BaseActivity implements ItemDetailView ,Erro
     @Override
     public void displayFoundItem(ItemSearch itemDetail) {
         imageAdapter.replace(itemDetail.getPictures());
-        this.textViewCantImages.setText(String.valueOf(itemDetail.getPictures().size()).concat(" "+getString(R.string._FOTOS)));
+        this.textViewCantImages.setText(String.valueOf(itemDetail.getPictures().size()).concat(" " + getString(R.string._FOTOS)));
         this.textViewTitle.setText(itemDetail.getTitle());
         this.textViewPrice.setText(getString(R.string.pesos_sig).concat(itemDetail.getPrice()));
         this.textViewDescription.setText(itemDetail.getDescription());
-        if(isDescriptionLoaded)
-        {
+        if (isDescriptionLoaded) {
             pbLoading.setVisibility(View.GONE);
             btnLinkMeli.setVisibility(View.VISIBLE);
             textTitleDesc.setText(getString(R.string.Description));
         }
-        isDetailsLoaded= true;
+        isDetailsLoaded = true;
 
         this.btnLinkMeli.setOnClickListener(view -> {
             Uri webpage = Uri.parse(itemDetail.getLinkMercadolibre());
@@ -130,40 +129,40 @@ public class DetailActivity extends BaseActivity implements ItemDetailView ,Erro
 
     @Override
     public void displayFailedGetDetails() {
-        if(!isShowingError)
+        if (!isShowingError)
             manageError(R.string.not_details);
 
     }
 
     private void manageError(int typeError) {
-        switch (typeError){
+        switch (typeError) {
             case R.string.network_error:
-                nestedFragment= new NoInternetFragment();
+                nestedFragment = new NoInternetFragment();
                 break;
             default:
-                    nestedFragment= new ErrorFragment();
+                nestedFragment = new ErrorFragment();
 
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.containerDetail,nestedFragment).commit();
-        this.isShowingError= true;
+        transaction.add(R.id.containerDetail, nestedFragment).commit();
+        this.isShowingError = true;
     }
 
     @Override
     public void displayFailedGetDescription() {
-        if(!isShowingError)
+        if (!isShowingError)
             manageError(R.string.not_details);
     }
 
     @Override
     public void displayNetworkError() {
-        if(!isShowingError)
+        if (!isShowingError)
             manageError(R.string.network_error);
     }
 
     @Override
     public void displayServerError() {
-        if(!isShowingError)
+        if (!isShowingError)
             manageError(R.string.server_error);
 
     }
@@ -171,21 +170,22 @@ public class DetailActivity extends BaseActivity implements ItemDetailView ,Erro
     @Override
     public void displayFoundDescription(String description) {
         this.textViewDescription.setText(description);
-        if(isDetailsLoaded) {
+        if (isDetailsLoaded) {
             pbLoading.setVisibility(View.GONE);
             btnLinkMeli.setVisibility(View.VISIBLE);
             textTitleDesc.setText(getString(R.string.Description));
         }
-        isDescriptionLoaded= true;
+        isDescriptionLoaded = true;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         String itemToSearch = getIntent().getStringExtra(getString(R.string.item_id_to_search));
-        itemDetailPresenter.getDetailsItem(itemToSearch,this);
-        itemDetailPresenter.getItemDescription(itemToSearch,this);
+        itemDetailPresenter.getDetailsItem(itemToSearch, this);
+        itemDetailPresenter.getItemDescription(itemToSearch, this);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

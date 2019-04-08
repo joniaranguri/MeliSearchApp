@@ -3,7 +3,8 @@
     package="com.aranguriapps.joni.melisearchapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".root.MeliSearchApp"
         android:allowBackup="true"

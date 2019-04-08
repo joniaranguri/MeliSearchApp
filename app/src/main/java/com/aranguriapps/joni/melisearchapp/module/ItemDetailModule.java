@@ -13,6 +13,7 @@ import com.aranguriapps.joni.melisearchapp.ui.viewmodel.ItemSearchView;
 
 import dagger.Module;
 import dagger.Provides;
+
 @Module
 public class ItemDetailModule {
 
@@ -33,6 +34,7 @@ public class ItemDetailModule {
     public ItemDetailPresenter providePresenter(ItemDetailView view, ItemSearchInteractor interactor) {
         return new ItemDetailPresenter(view, interactor);
     }
+
     @Provides
     public ImageAdapter provideAdapter(Context context) {
         return new ImageAdapter(context);

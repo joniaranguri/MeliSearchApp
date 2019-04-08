@@ -13,7 +13,7 @@ import com.aranguriapps.joni.melisearchapp.root.MeliSearchComponent;
 
 import butterknife.ButterKnife;
 
-public  abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     protected Toolbar mToolbar;
 
     @Override
@@ -66,7 +66,7 @@ public  abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Setup the object graph and inject the dependencies needed on this activity.
-*/
+     */
     private void injectDependencies() {
         setUpComponent(MeliSearchApp.getApp(this).getComponent());
     }
@@ -79,5 +79,5 @@ public  abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-   public abstract void setUpComponent(MeliSearchComponent appComponent);
+    public abstract void setUpComponent(MeliSearchComponent appComponent);
 }

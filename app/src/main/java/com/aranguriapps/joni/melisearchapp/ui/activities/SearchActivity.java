@@ -31,28 +31,30 @@ public class SearchActivity extends BaseActivity {
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
-            public void onSearchViewShown() { }
+            public void onSearchViewShown() {
+            }
 
             @Override
-            public void onSearchViewClosed() {}
+            public void onSearchViewClosed() {
+            }
         });
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Intent intent = new Intent(SearchActivity.this,ResultsActivity.class);
-                intent.putExtra("queryFromSearch",query);
+                Intent intent = new Intent(SearchActivity.this, ResultsActivity.class);
+                intent.putExtra("queryFromSearch", query);
                 startActivity(intent);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) { return true; }
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
 
         });
-
-
 
 
     }
@@ -75,7 +77,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item,menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
         return true;

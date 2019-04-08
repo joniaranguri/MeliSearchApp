@@ -5,6 +5,7 @@ import android.content.Context;
 
 public class MeliSearchApp extends Application {
     private MeliSearchComponent component;
+
     public MeliSearchComponent getComponent() {
         return component;
     }
@@ -23,14 +24,12 @@ public class MeliSearchApp extends Application {
     /**
      * The object graph contains all the instances of the objects
      * that resolve a dependency
-     * */
+     */
     private void setupGraph() {
         component = DaggerMeliSearchComponent.builder()
                 .meliSearchModule(new MeliSearchModule(this))
                 .build();
     }
-
-
 
 
 }

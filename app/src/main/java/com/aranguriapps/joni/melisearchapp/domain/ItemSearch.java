@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class ItemSearch implements Parcelable  {
+public class ItemSearch implements Parcelable {
     protected ItemSearch(Parcel in) {
         id = in.readString();
         thumbnail = in.readString();
@@ -38,8 +38,9 @@ public class ItemSearch implements Parcelable  {
         this.id = id;
     }
 
-    private  String id;
+    private String id;
     private String thumbnail;
+
     public String getTitle() {
         return title;
     }
@@ -49,7 +50,7 @@ public class ItemSearch implements Parcelable  {
     }
 
     private String title;
-     private String price;
+    private String price;
 
     public String getThumbnail() {
         return thumbnail;
@@ -105,7 +106,7 @@ public class ItemSearch implements Parcelable  {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-       if(pictures!=null) parcel.writeArray( pictures.toArray());
+        if (pictures != null) parcel.writeArray(pictures.toArray());
         parcel.writeString(id);
         parcel.writeString(linkMercadolibre);
         parcel.writeString(description);
@@ -114,12 +115,7 @@ public class ItemSearch implements Parcelable  {
         parcel.writeString(title);
 
 
-
-
     }
-
-
-
 
 
 }

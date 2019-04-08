@@ -168,7 +168,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         void setItemThumbnail(String urlImage) {
             Picasso.get()
-                    .load(urlImage.isEmpty()?null:MercadoLibreUtils.getImageGoodQuality(urlImage))
+                    .load(urlImage.isEmpty() ? null : MercadoLibreUtils.getImageGoodQuality(urlImage))
                     .placeholder(R.drawable.background_item)
                     // .resize(IMG_SIZE_PX, IMG_SIZE_PX)//change to a full image
                     .into(itemImage);
